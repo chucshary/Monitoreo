@@ -15,7 +15,7 @@ public class CargarPreferencias {
     private Context rootView;
     SharedPreferences sharedPreferences;
     private String getPreferenceToken;
-    private int getPreferenceTutorId;
+    public int getPreferenceTutorId;
 
     public CargarPreferencias(Context rootView) {
         this.rootView = rootView;

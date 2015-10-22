@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Monitoreo</string>
     <string name="action_settings">Settings</string>
-    <string name="api_endpoint">http://169.254.106.3:9000/api/monitoreo</string>
+    <string name="api_endpoint">http://192.168.2.209:9000/api/monitoreo</string>
 
     <string name="title_home">Inicio</string>
     <string name="title_pacientes">Pacientes</string>

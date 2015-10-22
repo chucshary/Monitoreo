@@ -21,6 +21,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class LoginActivity extends AppCompatActivity {
+
     private EditText email;
     private EditText password;
     private String endpoint;
