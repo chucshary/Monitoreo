@@ -25,7 +25,7 @@ public class CargarPreferencias {
 
         sharedPreferences = rootView.getSharedPreferences("Login", Context.MODE_PRIVATE);
         getPreferenceToken = sharedPreferences.getString("token", "");
-        getPreferenceTutorId = sharedPreferences.getInt("tutorId", -1);
+        getPreferenceTutorId = sharedPreferences.getInt("tutorId", 0);
         try {
             if (getPreferenceToken.isEmpty()) {
                 Toast.makeText(rootView, "Es necesario iniciar Sesión", Toast.LENGTH_LONG).show();

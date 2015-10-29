@@ -4,22 +4,22 @@ package rest;
  * Created by Shary on 18/10/2015.
  */
 public class Paciente {
-    private Integer PacienteId;
+    private int PacienteId;
     private String Nombre;
     private String Telefono;
     private String Direccion;
     private int Edad;
     private String Etapa;
-    private Integer NombreFoto;
+    private String NombreFoto;
     private String UrlFoto;
     private String FotoBase64;
-    private String TutorId;
+    private int TutorId;
 
-    public Integer getPacienteId() {
+    public int getPacienteId() {
         return PacienteId;
     }
 
-    public void setPacienteId(Integer pacienteId) {
+    public void setPacienteId(int pacienteId) {
         PacienteId = pacienteId;
     }
 
@@ -63,11 +63,11 @@ public class Paciente {
         Etapa = etapa;
     }
 
-    public Integer getNombreFoto() {
+    public String getNombreFoto() {
         return NombreFoto;
     }
 
-    public void setNombreFoto(Integer nombreFoto) {
+    public void setNombreFoto(String nombreFoto) {
         NombreFoto = nombreFoto;
     }
 
@@ -87,11 +87,11 @@ public class Paciente {
         FotoBase64 = fotoBase64;
     }
 
-    public String getTutorId() {
+    public int getTutorId() {
         return TutorId;
     }
 
-    public void setTutorId(String tutorId) {
+    public void setTutorId(int tutorId) {
         TutorId = tutorId;
     }
 }

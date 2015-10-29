@@ -1,6 +1,7 @@
 package Configuraciones;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -28,27 +29,34 @@ public class Geolocalizacion {
     private LocationManager locationManager;
     private String[] informacion;
     private Context rootView;
+    private LatLng latLng;
+    private SharedPreferences sharedPreferences;
 
-    public Geolocalizacion(Context rootView) {
+    public Geolocalizacion(Context rootView, LatLng latLng) {
         this.rootView = rootView;
+        this.latLng = latLng;
     }
 
     public String gps() {
         try {
-            locationManager = (LocationManager) rootView.getSystemService(Context.LOCATION_SERVICE);
-            longitude = location.getLongitude();
-            latitude = location.getLatitude();
-            System.out.println("LATLONG" + latitude + longitude);
             List<Address> addresses;
             Geocoder geocoder = new Geocoder(rootView, Locale.getDefault());
-            LatLng latLng = new LatLng(21.1619, -86.8515);
-            addresses = geocoder.getFromLocation(21.1619, -86.8515, 1);
+            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
             country = addresses.get(0).getCountryName();
-            city = addresses.get(0).getLocality();
             state = addresses.get(0).getAdminArea();
+            city = addresses.get(0).getLocality();
             direccion = addresses.get(0).getSubLocality() + " " + addresses.get(0).getThoroughfare();
+            sharedPreferences = rootView.getSharedPreferences("Ubicacion", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("pais", country);
+            editor.putString("estado", state);
+            editor.putString("ciudad", city);
+            editor.putString("direccion", direccion);
+            editor.commit();
+
         } catch (Exception e) {
         }
-        return "DIR" + country + city + state + direccion;
+
+        return country + " " + state + " " + city + " " + direccion;
     }
 }

@@ -22,4 +22,11 @@
     </string>
     <string name="title_activity_main">Pacientes</string>
     <string name="title_activity_choose">Elección</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string name="title_activity_splash_screen">SplashScreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_paciente">PacienteActivity</string>
+    <string name="title_activity_phone_number">PhoneNumberActivity</string>
 </resources>

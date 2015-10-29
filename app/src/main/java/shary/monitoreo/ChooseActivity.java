@@ -1,19 +1,18 @@
 package shary.monitoreo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Toast;
-
-import Configuraciones.Geolocalizacion;
-import Configuraciones.ObtenerNumero;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 public class ChooseActivity extends AppCompatActivity {
-    private Geolocalizacion geolocalizacion;
-    private ObtenerNumero obtenerNumero;
+    RadioGroup radioGroup;
+    RadioButton radioButton;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,22 +20,30 @@ public class ChooseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_choose);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        obtenerNumero = new ObtenerNumero(ChooseActivity.this);
-        System.out.println("NUMERO" + obtenerNumero.getPhoneNumber());
-        Toast.makeText(ChooseActivity.this, obtenerNumero.getPhoneNumber(), Toast.LENGTH_LONG).show();
-
-
-        geolocalizacion = new Geolocalizacion(ChooseActivity.this);
-        System.out.println("DIRECCION" + geolocalizacion.gps());
-        Toast.makeText(ChooseActivity.this, geolocalizacion.gps(), Toast.LENGTH_LONG).show();
+        radioGroup = (RadioGroup) findViewById(R.id.radioGrups);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                int selectedId = radioGroup.getCheckedRadioButtonId();
+                radioButton = (RadioButton) findViewById(selectedId);
+                try {
+                    if (radioButton.getText().equals("Tutor")) {
+                        intent = new Intent().setClass(
+                                ChooseActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                    if (radioButton.getText().equals("Paciente")) {
+                        intent = new Intent().setClass(
+                                ChooseActivity.this, PacienteActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                } catch (Exception e) {
+
+                }
             }
         });
     }

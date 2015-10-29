@@ -17,7 +17,7 @@ public interface PacienteService {
     public void getPatientId (@Path("pacienteIdTel")String id, @Header("ACCESS_TOKEN") String token, Callback<List<Paciente>> cb);
 
     @GET("/paciente/tutor/{tutorId}/")
-    public void getPatientByTutor (@Path("tutorId")int id, Callback<List<Paciente>> cb);
+    public void getPatientByTutor (@Path("tutorId")int tutorId, Callback<List<Paciente>> cb);
 
     //@GET("/paciente/tutor/{tutorId}/")
     //public void getPatientByTutor (@Path("tutorId")int id, @Header("ACCESS_TOKEN") String token, Callback<List<Paciente>> cb);

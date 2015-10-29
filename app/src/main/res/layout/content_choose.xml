@@ -1,12 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_choose" tools:context="shary.monitoreo.ChooseActivity">
+    tools:context="shary.monitoreo.ChooseActivity"
+    tools:showIn="@layout/activity_choose">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="250dp"
+        android:layout_height="265dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="57dp"
+        android:background="@color/colorAccent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="top"
+            android:src="@drawable/checked" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="249dp"
+            android:layout_height="180dp"
+            android:layout_below="@+id/imageView"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center|bottom"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="#FFFFFF">
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/radioGrups">
+
+                <RadioButton
+                    android:id="@+id/tutor"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="49dp"
+                    android:checked="false"
+                    android:focusableInTouchMode="false"
+                    android:fontFamily="Times New Roman"
+                    android:text="Tutor" />
+
+                <RadioButton
+                    android:id="@+id/paciente"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/radioButton"
+                    android:layout_below="@+id/radioButton"
+                    android:layout_gravity="center"
+                    android:checked="false"
+                    android:focusableInTouchMode="false"
+                    android:fontFamily="Times New Roman"
+                    android:text="Paciente" />
+            </RadioGroup>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
 
 </RelativeLayout>
