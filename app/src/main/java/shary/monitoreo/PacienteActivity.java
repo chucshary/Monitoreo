@@ -62,8 +62,6 @@ public class PacienteActivity extends AppCompatActivity {
             }
         } else {
             getPaciente(numero);
-            ubicacion = new Ubicacion(this);
-            ubicacion.gps();
         }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -78,20 +76,12 @@ public class PacienteActivity extends AppCompatActivity {
         public void run() {
             //12/04/2011 12:00:00 AM
             Calendar c = Calendar.getInstance();
-            int startTimeInSeconds = c.get(Calendar.HOUR);
-            int startTimeInSeconds2 = c.get(Calendar.MINUTE);
-            int startTimeInSeconds3 = c.get(Calendar.SECOND);
-            int startTimeInSeconds5 = c.get(Calendar.AM_PM);
-            int startTimeInSeconds4 = c.get(Calendar.DATE);
-
             SimpleDateFormat simpleDateFormat =
-                    new SimpleDateFormat("dd/MM/yyyy HH:mm:ss a");
+                    new SimpleDateFormat("dd/MM/yyyy hh:mm:ss aa");
             final String strDate = simpleDateFormat.format(c.getTime());
-
-            System.out.print("HORA " + strDate);
-            System.out.print(" IMPOSIBLE");
-
-            System.out.println("");
+            ubicacion = new Ubicacion(PacienteActivity.this);
+            ubicacion.gps();
+            System.out.print("DATETIME " + strDate);
         }
     }
 
