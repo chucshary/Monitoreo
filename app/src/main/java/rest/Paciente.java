@@ -13,6 +13,7 @@ public class Paciente {
     private String NombreFoto;
     private String UrlFoto;
     private String FotoBase64;
+    private int Notificacion;
     private int TutorId;
 
     public int getPacienteId() {
@@ -85,6 +86,14 @@ public class Paciente {
 
     public void setFotoBase64(String fotoBase64) {
         FotoBase64 = fotoBase64;
+    }
+
+    public int getNotificacion() {
+        return Notificacion;
+    }
+
+    public void setNotificacion(int notificacion) {
+        Notificacion = notificacion;
     }
 
     public int getTutorId() {

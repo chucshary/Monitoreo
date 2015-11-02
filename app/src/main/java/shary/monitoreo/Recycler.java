@@ -43,6 +43,7 @@ public class Recycler extends Fragment {
     private CargarPreferencias cargarPreferencias;
     private SharedPreferences sharedPreferences;
     int id = 0;
+    private String token = "";
     View rootView;
 
     @Override
@@ -59,16 +60,17 @@ public class Recycler extends Fragment {
 
         sharedPreferences = rootView.getContext().getSharedPreferences("Login", Context.MODE_PRIVATE);
         id = sharedPreferences.getInt("tutorId", -1);
-        System.out.println("TUTOR " + id);
+        token = sharedPreferences.getString("token", "");
+        System.out.println("TUTOR " + id + "  " + token);
         listadoPacienteFoto = new ArrayList<String>();
         listadoPacienteNombre = new ArrayList<String>();
         listadoPacienteEtapa = new ArrayList<String>();
-        listado(id);
+        listado(id, token);
 
         return rootView;
     }
 
-    public void listado(int id) {
+    public void listado(int id, String token) {
         System.out.println("ENTRO LISTADO");
         endpoint = getString(R.string.api_endpoint);
         items = new ArrayList();
@@ -76,9 +78,8 @@ public class Recycler extends Fragment {
         RestAdapter.Builder builder = new RestAdapter.Builder();
         builder.setEndpoint(endpoint);
         RestAdapter restAdapter = builder.build();
-
         PacienteService service = restAdapter.create(PacienteService.class);
-        service.getPatientByTutor(id, new Callback<List<Paciente>>() {
+        service.getPatientByTutor(id, token, new Callback<List<Paciente>>() {
             @Override
             public void success(List<Paciente> pacientes, Response response) {
                 System.out.println("CALLBACK " + pacientes.size());
@@ -101,7 +102,6 @@ public class Recycler extends Fragment {
                 }
                 adapter = new RVAdapter(items, rootView);
                 recyclerView.setAdapter(adapter);
-
             }
 
             @Override
@@ -111,6 +111,7 @@ public class Recycler extends Fragment {
                         .setAction("Action", null).show();
             }
         });
+
 
     }
 

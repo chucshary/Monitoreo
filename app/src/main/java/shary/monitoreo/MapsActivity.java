@@ -14,7 +14,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import Configuraciones.Geolocalizacion;
+import Configuraciones.Localizacion;
 
 public class MapsActivity extends FragmentActivity {
 
@@ -25,7 +25,7 @@ public class MapsActivity extends FragmentActivity {
     private double latitude = 0;
     private LatLng latLng;
     private CameraUpdate mcamera;
-    private Geolocalizacion geolocalizacion;
+    private Localizacion localizacion;
     private GoogleMap mapAux;
 
     @Override
@@ -44,12 +44,12 @@ public class MapsActivity extends FragmentActivity {
         mMap.setMyLocationEnabled(true);
         try {
             locationManager = (LocationManager) getBaseContext().getSystemService(Context.LOCATION_SERVICE);
-            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             latitude = location.getLatitude();
             longitude = location.getLongitude();
             latLng = new LatLng(latitude, longitude);
-            geolocalizacion = new Geolocalizacion(this, latLng);
-            setMarker(latLng, geolocalizacion.gps(), latitude + " " + longitude);
+            localizacion = new Localizacion(this, latLng);
+            setMarker(latLng, localizacion.gps(), latitude + " " + longitude);
 
         } catch (Exception e) {
         }
@@ -60,7 +60,7 @@ public class MapsActivity extends FragmentActivity {
                 .position(latLng)
                 .title(titulo)
                 .snippet(info)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                 .draggable(true));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mcamera = CameraUpdateFactory.newLatLngZoom((latLng), 8);

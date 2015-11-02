@@ -12,80 +12,42 @@
     tools:context="shary.monitoreo.LoginActivity"
     tools:showIn="@layout/activity_login">
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="350dp"
-        android:layout_height="342dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="31dp"
-        android:background="@color/colorAccent"
+    <ImageView
+        android:id="@+id/ImageSwitcher01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha=".60"
+        android:background="@drawable/bpverde"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@id/ImageSwitcher01"></ImageView>
 
-        <TextView
-            android:id="@+id/txt_sesion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="Times New Roman"
-            android:padding="5dp"
-            android:text="INICIAR SESIÓN"
-            android:textAlignment="center"
-            android:textColor="@color/common_signin_btn_dark_text_default"
-            android:textSize="25dp"
-            android:textStyle="bold|normal" />
-
-        <RelativeLayout
-            android:id="@+id/relativeLayout2"
-            android:layout_width="350dp"
-            android:layout_height="300dp"
-            android:layout_gravity="center|bottom"
-            android:background="#FFFFFF"
-            android:layout_below="@+id/txt_sesion"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="2dp">
-
-            <EditText
-                android:id="@+id/txt_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_margin="10dp"
-                android:ems="10"
-                android:fontFamily="Times New Roman"
-                android:inputType="textEmailAddress"
-                android:padding="15dp"
-                android:text="Correo Electrónico"
-                android:textAlignment="inherit"
-                android:textColor="@android:color/background_dark" />
-
-            <EditText
-                android:id="@+id/txt_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_margin="10dp"
-                android:ems="10"
-                android:fontFamily="Times New Roman"
-                android:inputType="textEmailAddress"
-                android:padding="15dp"
-                android:text="Contraseña"
-                android:layout_below="@+id/txt_email"
-                android:textAlignment="inherit"
-                android:textColor="@android:color/background_dark" />
-            <android.support.design.widget.FloatingActionButton android:id="@+id/fab"
-                android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:src="@android:drawable/ic_lock_idle_lock"
-                android:layout_marginLeft="@dimen/fab_margin"
-                android:layout_marginRight="@dimen/fab_margin"
-                android:layout_alignParentBottom="true"
-                android:layout_alignEnd="@+id/txt_password"
-                android:layout_marginBottom="31dp" />
-
-        </RelativeLayout>
-    </RelativeLayout>
+    <EditText
+        android:id="@+id/txt_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:drawableLeft="@drawable/email"
+        android:focusable="true"
+        android:hint="Correo electrónico"
+        android:inputType="textEmailAddress"
+        android:textSize="12dp"
+        android:textStyle="bold|normal"
+        android:typeface="serif"
+        android:layout_above="@+id/txt_password"
+        android:layout_alignParentLeft="true" />
 
 
+    <EditText
+        android:id="@+id/txt_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/locks"
+        android:hint="Contraseña"
+        android:inputType="textPassword"
+        android:textSize="12dp"
+        android:textStyle="bold|normal"
+        android:typeface="serif"
+        android:layout_alignBottom="@+id/ImageSwitcher01"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

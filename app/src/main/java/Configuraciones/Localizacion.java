@@ -16,7 +16,7 @@ import java.util.Locale;
 /**
  * Created by Shary on 19/10/2015.
  */
-public class Geolocalizacion {
+public class Localizacion {
 
     private String country = "";
     private String city = "";
@@ -32,7 +32,7 @@ public class Geolocalizacion {
     private LatLng latLng;
     private SharedPreferences sharedPreferences;
 
-    public Geolocalizacion(Context rootView, LatLng latLng) {
+    public Localizacion(Context rootView, LatLng latLng) {
         this.rootView = rootView;
         this.latLng = latLng;
     }
@@ -46,17 +46,8 @@ public class Geolocalizacion {
             state = addresses.get(0).getAdminArea();
             city = addresses.get(0).getLocality();
             direccion = addresses.get(0).getSubLocality() + " " + addresses.get(0).getThoroughfare();
-            sharedPreferences = rootView.getSharedPreferences("Ubicacion", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("pais", country);
-            editor.putString("estado", state);
-            editor.putString("ciudad", city);
-            editor.putString("direccion", direccion);
-            editor.commit();
-
         } catch (Exception e) {
         }
-
         return country + " " + state + " " + city + " " + direccion;
     }
 }

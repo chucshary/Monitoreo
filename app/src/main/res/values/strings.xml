@@ -1,32 +1,21 @@
 <resources>
-    <string name="app_name">Monitoreo</string>
+    <string name="app_name">Beepeople</string>
     <string name="action_settings">Settings</string>
-    <string name="api_endpoint">http://192.168.2.209:9000/api/monitoreo</string>
+    <string name="api_endpoint">http://192.168.0.6:9000/api/monitoreo</string>
 
     <string name="title_home">Inicio</string>
     <string name="title_pacientes">Pacientes</string>
     <string name="title_Ubicacion">Ubicación Paciente</string>
     <string name="title_activity_login">Iniciar Sesión</string>
 
-    <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">Correo Electrónico Invalido</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">Este campo es requerido</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+
     <string name="title_activity_main">Pacientes</string>
     <string name="title_activity_choose">Elección</string>
     <string name="title_activity_maps">Map</string>
 
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_paciente">PacienteActivity</string>
-    <string name="title_activity_phone_number">PhoneNumberActivity</string>
+    <string name="title_activity_phone_number">Beepeople</string>
 </resources>

@@ -24,7 +24,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         try {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            //requestWindowFeature(Window.FEATURE_NO_TITLE);
             setContentView(R.layout.activity_splash_screen);
             mVisible = true;
             progressBar = (ProgressBar) findViewById(R.id.progressBar);
