@@ -48,6 +48,6 @@ public class Localizacion {
             direccion = addresses.get(0).getSubLocality() + " " + addresses.get(0).getThoroughfare();
         } catch (Exception e) {
         }
-        return country + " " + state + " " + city + " " + direccion;
+        return country + "/" + state + "/" + city + "/" + direccion;
     }
 }

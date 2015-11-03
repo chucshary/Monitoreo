@@ -4,14 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import org.apache.commons.lang.ObjectUtils;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -33,6 +34,9 @@ public class PacienteActivity extends AppCompatActivity {
     String numero = "";
     private Ubicacion ubicacion;
     private String endpoint;
+    int ii = 0;
+    private Timer myTimer = new Timer();
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,14 +78,14 @@ public class PacienteActivity extends AppCompatActivity {
 
     class MyTimerTask extends TimerTask {
         public void run() {
-            //12/04/2011 12:00:00 AM
-            Calendar c = Calendar.getInstance();
-            SimpleDateFormat simpleDateFormat =
-                    new SimpleDateFormat("dd/MM/yyyy hh:mm:ss aa");
-            final String strDate = simpleDateFormat.format(c.getTime());
-            ubicacion = new Ubicacion(PacienteActivity.this);
-            ubicacion.gps();
-            System.out.print("DATETIME " + strDate);
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.print("TASKS " + ii++ + "\n");
+                    Ubicacion _ubicacion = new Ubicacion(PacienteActivity.this);
+                    _ubicacion.datosLocalizacion();
+                }
+            });
         }
     }
 
@@ -100,10 +104,8 @@ public class PacienteActivity extends AppCompatActivity {
                 editor.putInt("id", paciente.getPacienteId());
                 editor.putInt("notificacion", paciente.getNotificacion());
                 editor.commit();
-
-                MyTimerTask myTask = new MyTimerTask();
-                Timer myTimer = new Timer();
-                myTimer.schedule(myTask, 100, paciente.getNotificacion() * 60 * 1000);
+                myTimer = new Timer();
+                myTimer.schedule(new MyTimerTask(), 100, paciente.getNotificacion() * 60 * 1000);
             }
 
             @Override

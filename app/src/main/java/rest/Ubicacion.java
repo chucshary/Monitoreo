@@ -15,7 +15,7 @@ public class Ubicacion {
     private String Direccion;
     private String Latitud;
     private String Longitud;
-    private DateFormat Fecha;
+    private String Fecha;
     private int PacienteId;
 
     public int getUbicacionId() {
@@ -74,11 +74,11 @@ public class Ubicacion {
         Longitud = longitud;
     }
 
-    public DateFormat getFecha() {
+    public String getFecha() {
         return Fecha;
     }
 
-    public void setFecha(DateFormat fecha) {
+    public void setFecha(String fecha) {
         Fecha = fecha;
     }
 
