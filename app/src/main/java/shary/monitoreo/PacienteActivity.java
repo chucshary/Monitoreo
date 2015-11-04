@@ -35,8 +35,7 @@ public class PacienteActivity extends AppCompatActivity {
     private Ubicacion ubicacion;
     private String endpoint;
     int ii = 0;
-    private Timer myTimer = new Timer();
-    private Handler handler = new Handler();
+    private Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,16 +75,12 @@ public class PacienteActivity extends AppCompatActivity {
         });
     }
 
-    class MyTimerTask extends TimerTask {
+    class LocationTimerTask extends TimerTask {
+        @Override
         public void run() {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    System.out.print("TASKS " + ii++ + "\n");
-                    Ubicacion _ubicacion = new Ubicacion(PacienteActivity.this);
-                    _ubicacion.datosLocalizacion();
-                }
-            });
+            System.out.print("TIMER " + ii++ + "\n");
+            ubicacion = new Ubicacion(PacienteActivity.this);
+            ubicacion.datosLocalizacion();
         }
     }
 
@@ -98,14 +93,16 @@ public class PacienteActivity extends AppCompatActivity {
         service.getPatientId(numero, new Callback<Paciente>() {
             @Override
             public void success(Paciente paciente, Response response) {
-                System.out.println("CALLBACK " + paciente.getNombre() + " " + paciente.getNotificacion());
+                System.out.println("CALLBACK " + paciente.getPacienteId() + "" + paciente.getNombre() + " " + paciente.getNotificacion());
                 sharedPreferences = getSharedPreferences("Telefono", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putInt("id", paciente.getPacienteId());
+                editor.putInt("idPaciente", paciente.getPacienteId());
                 editor.putInt("notificacion", paciente.getNotificacion());
                 editor.commit();
-                myTimer = new Timer();
-                myTimer.schedule(new MyTimerTask(), 100, paciente.getNotificacion() * 60 * 1000);
+
+                TimerTask timerTask = new LocationTimerTask();
+                timer = new Timer();
+                timer.schedule(timerTask, 100, paciente.getNotificacion() * 60 * 1000);
             }
 
             @Override

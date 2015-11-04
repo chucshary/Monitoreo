@@ -9,5 +9,5 @@ import retrofit.http.POST;
  */
 public interface UbicacionService {
     @POST("/ubicacion")
-    public void addLocation(@Body Ubicacion ubicacion, Callback<Ubicacion> cb);
+    public void addLocation(@Body UbicacionAux ubicacionAux, Callback<Ubicacion> cb);
 }

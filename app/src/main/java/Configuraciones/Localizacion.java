@@ -45,7 +45,7 @@ public class Localizacion {
             country = addresses.get(0).getCountryName();
             state = addresses.get(0).getAdminArea();
             city = addresses.get(0).getLocality();
-            direccion = addresses.get(0).getSubLocality() + " " + addresses.get(0).getThoroughfare();
+            direccion = addresses.get(0).getSubLocality() + ", " + addresses.get(0).getThoroughfare();
         } catch (Exception e) {
         }
         return country + "/" + state + "/" + city + "/" + direccion;

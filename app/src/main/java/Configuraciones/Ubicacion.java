@@ -2,6 +2,7 @@ package Configuraciones;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
@@ -13,16 +14,27 @@ import com.google.android.gms.maps.model.LatLng;
 
 import org.apache.http.params.HttpConnectionParams;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 import rest.AccesoTokenService;
+import rest.UbicacionAux;
 import rest.UbicacionService;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import shary.monitoreo.PacienteActivity;
+import shary.monitoreo.PhoneNumberActivity;
 import shary.monitoreo.R;
 
 /**
@@ -42,7 +54,7 @@ public class Ubicacion {
     private String strDate;
     private boolean dato = false;
     private String endpoint;
-    private rest.Ubicacion ubicacion;
+    private UbicacionAux ubicacion;
     private String[] datosLoalizacion;
     private SharedPreferences sharedPreferences;
     private int idPaciente;
@@ -51,6 +63,9 @@ public class Ubicacion {
 
     public Ubicacion(Context rootView) {
         this.rootView = rootView;
+        ubicacion = new UbicacionAux();
+        adapter = null;
+        ubicacionService = null;
     }
 
     public void datosLocalizacion() {
@@ -80,12 +95,11 @@ public class Ubicacion {
         System.out.print("\nSUCCESS DATE " + strDate);
         datosLoalizacion = datos.split("/");
         endpoint = rootView.getString(R.string.api_endpoint);
-        System.setProperty(endpoint, "false");
 
-        adapter = new RestAdapter.Builder().setEndpoint(endpoint).build();
+        adapter = new RestAdapter.Builder()
+                .setEndpoint(endpoint).setLogLevel(RestAdapter.LogLevel.FULL).build();
         ubicacionService = adapter.create(UbicacionService.class);
 
-        ubicacion = new rest.Ubicacion();
         ubicacion.setPais(datosLoalizacion[0]);
         ubicacion.setEstado(datosLoalizacion[1]);
         ubicacion.setCiudad(datosLoalizacion[2]);
@@ -100,14 +114,16 @@ public class Ubicacion {
         ubicacionService.addLocation(ubicacion, new Callback<rest.Ubicacion>() {
             @Override
             public void success(rest.Ubicacion ubicacion, Response response) {
-                System.out.print("SUCCESS");
             }
 
             @Override
             public void failure(RetrofitError error) {
                 Log.e("Ubicacion", error.getMessage());
-                System.out.print("ERROR UBICACION" + error);
+                System.out.print("\nERROR UBICACION" + error + "\n");
+                datosLocalizacion();
             }
         });
+
+
     }
 }

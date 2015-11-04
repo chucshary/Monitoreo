@@ -44,6 +44,8 @@ public class Recycler extends Fragment {
     private SharedPreferences sharedPreferences;
     int id = 0;
     private String token = "";
+    private String idsPatients;
+    private String timeNotification;
     View rootView;
 
     @Override
@@ -94,7 +96,10 @@ public class Recycler extends Fragment {
                         listadoPacienteFoto.add(pacientes.get(i).getUrlFoto().toString());
                         listadoPacienteNombre.add(pacientes.get(i).getNombre().toString());
                         listadoPacienteEtapa.add(pacientes.get(i).getEtapa().toString());
+                        idsPatients += String.valueOf(pacientes.get(i).getPacienteId()) + "/";
+                        timeNotification += String.valueOf(pacientes.get(i).getNotificacion()) + "/";
                     }
+                    shared(idsPatients, timeNotification);
                     for (int j = 0; j < listadoPacienteNombre.size(); j++) {
                         url = getString(R.string.api_endpoint).concat(listadoPacienteFoto.get(j).toString().toLowerCase());
                         items.add(new DescripcionPaciente(url, listadoPacienteNombre.get(j).toString(), listadoPacienteEtapa.get(j).toString()));
@@ -113,6 +118,14 @@ public class Recycler extends Fragment {
         });
 
 
+    }
+
+    public void shared(String ids, String notificaciones) {
+        sharedPreferences = rootView.getContext().getSharedPreferences("NOTIFICACION", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("ids", ids);
+        editor.putString("notificaciones", notificaciones);
+        editor.commit();
     }
 
 }
