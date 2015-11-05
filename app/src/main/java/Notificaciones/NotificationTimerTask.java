@@ -1,4 +1,4 @@
-package Configuraciones;
+package Notificaciones;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,8 +6,12 @@ import android.content.SharedPreferences;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import rest.UbicacionService;
+import rest.*;
+import rest.Ubicacion;
+import retrofit.Callback;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import shary.monitoreo.R;
 
 /**
@@ -25,18 +29,40 @@ public class NotificationTimerTask {
     private String[] _arrayNotificacion;
     private String ids;
     private String notificaciones;
+    private int idAux = 0;
+    private RestAdapter adapter;
+    private String endpoint;
+    private UbicacionService ubicacionService;
 
 
     public NotificationTimerTask(Context rootView) {
         this.rootView = rootView;
-        TimerTask timerTask = new TimerTaskNotification();
-        timer = new Timer();
-        timer.schedule(timerTask, 100, 60 * 1000);
+        getNotification();
     }
 
     public class TimerTaskNotification extends TimerTask {
-        public void run() {
+        int id;
 
+        public TimerTaskNotification(int id) {
+            this.id = id;
+        }
+
+        public void run() {
+            endpoint = rootView.getString(R.string.api_endpoint);
+            adapter = new RestAdapter.Builder()
+                    .setEndpoint(endpoint).setLogLevel(RestAdapter.LogLevel.FULL).build();
+            ubicacionService = adapter.create(UbicacionService.class);
+            ubicacionService.getLocation(id, new Callback<rest.Ubicacion>() {
+                @Override
+                public void success(Ubicacion ubicacion, Response response) {
+
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+
+                }
+            });
         }
     }
 
@@ -51,8 +77,9 @@ public class NotificationTimerTask {
         for (int i = 0; i < _arrayIds.length; i++) {
             arrayIds[i] = Integer.parseInt(_arrayIds[i].toString());
             arrayNotificacion[i] = Integer.parseInt(_arrayNotificacion[i].toString());
+            timer = new Timer();
+            timer.schedule(new TimerTaskNotification(arrayIds[i]), 100, arrayNotificacion[i] * 60 * 1000);
         }
     }
-
 }
 
