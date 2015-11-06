@@ -1,40 +1,23 @@
 package Configuraciones;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
-import org.apache.http.params.HttpConnectionParams;
-
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
 
-import rest.AccesoTokenService;
+import Preferencias._SharedPreferences;
 import rest.UbicacionAux;
 import rest.UbicacionService;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import shary.monitoreo.PacienteActivity;
-import shary.monitoreo.PhoneNumberActivity;
 import shary.monitoreo.R;
 
 /**
@@ -60,6 +43,8 @@ public class Ubicacion {
     private int idPaciente;
     private RestAdapter adapter;
     private UbicacionService ubicacionService;
+    private String latlon = "";
+    private _SharedPreferences classShared;
 
     public Ubicacion(Context rootView) {
         this.rootView = rootView;
@@ -95,9 +80,9 @@ public class Ubicacion {
         System.out.print("\nSUCCESS DATE " + strDate);
         datosLoalizacion = datos.split("/");
         endpoint = rootView.getString(R.string.api_endpoint);
-
         adapter = new RestAdapter.Builder()
                 .setEndpoint(endpoint).setLogLevel(RestAdapter.LogLevel.FULL).build();
+
         ubicacionService = adapter.create(UbicacionService.class);
 
         ubicacion.setPais(datosLoalizacion[0]);
@@ -123,7 +108,28 @@ public class Ubicacion {
                 datosLocalizacion();
             }
         });
+    }
 
+    public void getUbicacion(int id) {
 
+        endpoint = rootView.getString(R.string.api_endpoint);
+        adapter = new RestAdapter.Builder()
+                .setEndpoint(endpoint).setLogLevel(RestAdapter.LogLevel.FULL).build();
+        ubicacionService = adapter.create(UbicacionService.class);
+        ubicacionService.getLocation(id, new Callback<rest.Ubicacion>() {
+            @Override
+            public void success(rest.Ubicacion ubicacion, Response response) {
+                latlon = String.valueOf(ubicacion.getLatitud() + "/" + ubicacion.getLongitud());
+                System.out.print("\nUBIADAP" + latlon + "\n");
+                classShared = new _SharedPreferences(rootView, "Latitud/Longitud", latlon, "LATILONG");
+                classShared.guardarPreferencias();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("Ubicacion", error.getMessage());
+                System.out.print("\nERROR GET UBICACION" + error + "\n");
+            }
+        });
     }
 }
