@@ -45,6 +45,7 @@ public class Ubicacion {
     private UbicacionService ubicacionService;
     private String latlon = "";
     private _SharedPreferences classShared;
+    private String datos;
 
     public Ubicacion(Context rootView) {
         this.rootView = rootView;
@@ -64,8 +65,6 @@ public class Ubicacion {
                 longitude = location.getLongitude();
                 latLng = new LatLng(latitude, longitude);
                 localizacion = new Localizacion(rootView, latLng);
-
-                //12/04/2011 12:00:00 AM
                 calendar = Calendar.getInstance();
                 simpleDateFormat =
                         new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -120,8 +119,9 @@ public class Ubicacion {
             @Override
             public void success(rest.Ubicacion ubicacion, Response response) {
                 latlon = String.valueOf(ubicacion.getLatitud() + "/" + ubicacion.getLongitud());
-                System.out.print("\nUBIADAP" + latlon + "\n");
-                classShared = new _SharedPreferences(rootView, "Latitud/Longitud", latlon, "LATILONG");
+                datos = ubicacion.getPais() + ", " + ubicacion.getEstado() + " " + ubicacion.getCiudad() +
+                        ", " + ubicacion.getDireccion();
+                classShared = new _SharedPreferences(rootView, "Latitud/Longitud/Datos", latlon + "/" + datos, "LATILONG");
                 classShared.guardarPreferencias();
             }
 

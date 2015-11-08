@@ -5,6 +5,7 @@ package shary.monitoreo;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -23,10 +23,7 @@ import Configuraciones.Ubicacion;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RecetaViewHolder> {
     private List<DescripcionPaciente> items;
-    RecyclerView recyclerView;
-    View context;
-    public String pacienteNemeAux = "";
-    public List<String> listado;
+    private View context;
     private String ids;
     private SharedPreferences sharedPreferences;
     private String[] _id;
@@ -76,8 +73,16 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RecetaViewHolder> 
             sharedPreferences = context.getContext().getSharedPreferences("LATILONG", Context.MODE_PRIVATE);
             String _lat = sharedPreferences.getString("Latitud", "");
             String _long = sharedPreferences.getString("Longitud", "");
-            System.out.print("\nGETADAPTER" + _lat + " " + _long + "\n");
-            Toast.makeText(itemView.getContext(), _lat + "   POS " + getPosition() + "  " + items.get(getPosition()).getName() + "", Toast.LENGTH_SHORT).show();
+            String _datos = sharedPreferences.getString("Datos", "");
+            //Toast.makeText(itemView.getContext(), "POS " + getPosition() + "  " + items.get(getPosition()).getName() + "", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(v.getContext(), MapsActivity.class);
+            intent.putExtra("Latitud", _lat);
+            intent.putExtra("Longitud", _long);
+            intent.putExtra("Datos", _datos);
+            intent.putExtra("Paciente", items.get(getPosition()).getName());
+            v.getContext().startActivity(intent);
+            //((AppCompatActivity)v.getContext()).finish();
         }
 
     }

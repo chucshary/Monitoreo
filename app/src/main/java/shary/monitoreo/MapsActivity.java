@@ -1,10 +1,13 @@
 package shary.monitoreo;
 
-import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -27,6 +30,11 @@ public class MapsActivity extends FragmentActivity {
     private CameraUpdate mcamera;
     private Localizacion localizacion;
     private GoogleMap mapAux;
+    private String _latitude;
+    private String _longitude;
+    private String _datos = "";
+    private String _paciente = "";
+    private TextView toolbarText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,26 +42,41 @@ public class MapsActivity extends FragmentActivity {
         setContentView(R.layout.activity_maps);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        toolbarText = (TextView) findViewById(R.id.toolbarText);
         mapAux = mapFragment.getMap();
         setUpMap(mapFragment.getMap());
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
+
     private void setUpMap(GoogleMap googleMap) {
+        Intent intent = getIntent();
+        _latitude = intent.getStringExtra("Latitud");
+        _longitude = intent.getStringExtra("Longitud");
+        _datos = intent.getStringExtra("Datos");
+        _paciente = intent.getStringExtra("Paciente");
+        toolbarText.setText(_paciente);
+
+        System.out.print("\nGETADAPTERMAP" + _latitude + " " + _longitude + " " + _datos + "\n");
         this.mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setMyLocationEnabled(true);
         try {
-            locationManager = (LocationManager) getBaseContext().getSystemService(Context.LOCATION_SERVICE);
-            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
+            latitude = Double.parseDouble(_latitude);
+            longitude = Double.parseDouble(_longitude);
             latLng = new LatLng(latitude, longitude);
-            localizacion = new Localizacion(this, latLng);
-            setMarker(latLng, localizacion.gps(), latitude + " " + longitude);
+            setMarker(latLng, _datos, latitude + " " + longitude);
 
         } catch (Exception e) {
         }
     }
+
 
     private void setMarker(LatLng latLng, String titulo, String info) {
         mMap.addMarker(new MarkerOptions()
@@ -63,7 +86,7 @@ public class MapsActivity extends FragmentActivity {
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                 .draggable(true));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mcamera = CameraUpdateFactory.newLatLngZoom((latLng), 8);
+        mcamera = CameraUpdateFactory.newLatLngZoom((latLng), 10);
         mMap.animateCamera(mcamera);
     }
 }

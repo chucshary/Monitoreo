@@ -44,8 +44,8 @@ public class Recycler extends Fragment {
     private SharedPreferences sharedPreferences;
     int id = 0;
     private String token = "";
-    private String idsPatients;
-    private String timeNotification;
+    private String idsPatients = "";
+    private String timeNotification = "";
     View rootView;
 
     @Override
