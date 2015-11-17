@@ -67,7 +67,7 @@ public class Ubicacion {
                 localizacion = new Localizacion(rootView, latLng);
                 calendar = Calendar.getInstance();
                 simpleDateFormat =
-                        new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                        new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 strDate = simpleDateFormat.format(calendar.getTime());
                 postUbicacion(latitude, longitude, localizacion.gps(), strDate);
             }

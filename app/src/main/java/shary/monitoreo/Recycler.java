@@ -87,7 +87,7 @@ public class Recycler extends Fragment {
                 System.out.println("CALLBACK " + pacientes.size());
                 if (pacientes.size() == 1) {
                     System.out.println("OPCION 1 " + pacientes.size());
-                    url = getString(R.string.api_endpoint).concat(pacientes.get(0).getUrlFoto().toString().toLowerCase());
+                    url = getString(R.string.api_endpointImage).concat(pacientes.get(0).getUrlFoto().toString().toLowerCase());
                     items.add(new DescripcionPaciente(url, pacientes.get(0).getNombre().toString(), pacientes.get(0).getEtapa().toString()));
                 } else {
                     System.out.println("OPCION 2 " + pacientes.size());
@@ -101,7 +101,7 @@ public class Recycler extends Fragment {
                     }
                     shared(idsPatients, timeNotification);
                     for (int j = 0; j < listadoPacienteNombre.size(); j++) {
-                        url = getString(R.string.api_endpoint).concat(listadoPacienteFoto.get(j).toString().toLowerCase());
+                        url = getString(R.string.api_endpointImage).concat(listadoPacienteFoto.get(j).toString().toLowerCase());
                         items.add(new DescripcionPaciente(url, listadoPacienteNombre.get(j).toString(), listadoPacienteEtapa.get(j).toString()));
                     }
                 }
