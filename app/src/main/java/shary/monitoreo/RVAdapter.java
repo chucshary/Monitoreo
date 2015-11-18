@@ -83,6 +83,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RecetaViewHolder> 
             intent.putExtra("Paciente", items.get(getPosition()).getName());
             v.getContext().startActivity(intent);
             //((AppCompatActivity)v.getContext()).finish();
+            /*Intent intent = new Intent((AppCompatActivity)v.getContext(), MainMap.class);
+            v.getContext().startActivity(intent);*/
         }
 
     }
