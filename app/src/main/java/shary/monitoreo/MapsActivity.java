@@ -1,6 +1,7 @@
 package shary.monitoreo;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ public class MapsActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_maps);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);

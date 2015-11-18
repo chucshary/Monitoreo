@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import Configuraciones.Connectivity;
 import Preferencias.CargarPreferencias;
 import Preferencias.GuardarPreferencias;
 import rest.AccesoToken;
@@ -34,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "Login";
     private GuardarPreferencias guardarPreferencias;
     private CargarPreferencias cargarPreferencias;
+    private Connectivity connectivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,45 +63,46 @@ public class LoginActivity extends AppCompatActivity {
                     email.setError(getString(R.string.error_invalid_email));
                     cancel = true;
                 }
-                if (TextUtils.isEmpty(password.getText().toString()))
-                {
+                if (TextUtils.isEmpty(password.getText().toString())) {
                     password.setError(getString(R.string.error_field_required));
                     cancel = true;
-                }
-                else {
-                    credentials = new Credenciales();
-                    credentials.setEmail(email.getText().toString());
-                    credentials.setPassword(password.getText().toString());
-                    endpoint = getString(R.string.api_endpoint);
-                    RestAdapter adapter = new RestAdapter.Builder().setEndpoint(endpoint).build();
-                    AccesoTokenService service = adapter.create(AccesoTokenService.class);
-                    service.createAccessToken(credentials, new Callback<AccesoToken>() {
-                        @Override
-                        public void success(AccesoToken accesoToken, Response response) {
-                            if(accesoToken!=null)
-                            {
-                                tokenObtenido = accesoToken.getToken();
-                                idObtenido = accesoToken.getTutorId();
-                                guardarPreferencias = new GuardarPreferencias(LoginActivity.this, tokenObtenido, idObtenido);
-                                guardarPreferencias.guardarPreferencias();
-                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                LoginActivity.this.finish();
+                } else {
+                    connectivity = new Connectivity(view);
+                    if (connectivity.checkConnectivity()) {
+                        credentials = new Credenciales();
+                        credentials.setEmail(email.getText().toString());
+                        credentials.setPassword(password.getText().toString());
+                        endpoint = getString(R.string.api_endpoint);
+                        RestAdapter adapter = new RestAdapter.Builder().setEndpoint(endpoint).build();
+                        AccesoTokenService service = adapter.create(AccesoTokenService.class);
+                        service.createAccessToken(credentials, new Callback<AccesoToken>() {
+                            @Override
+                            public void success(AccesoToken accesoToken, Response response) {
+                                if (accesoToken != null) {
+                                    tokenObtenido = accesoToken.getToken();
+                                    idObtenido = accesoToken.getTutorId();
+                                    guardarPreferencias = new GuardarPreferencias(LoginActivity.this, tokenObtenido, idObtenido);
+                                    guardarPreferencias.guardarPreferencias();
+                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                    LoginActivity.this.finish();
+                                } else {
+                                    Snackbar.make(rootView, "Credenciales Incorrectas ", Snackbar.LENGTH_LONG)
+                                            .setAction("Action", null).show();
+                                    email.requestFocus();
+                                    email.setText("");
+                                    password.setText("");
+                                }
                             }
-                            else
-                            {
-                                Snackbar.make(rootView, "Credenciales Incorrectas ", Snackbar.LENGTH_LONG)
-                                        .setAction("Action", null).show();
-                                email.requestFocus();
-                                email.setText("");
-                                password.setText("");
-                            }
-                        }
 
-                        @Override
-                        public void failure(RetrofitError error) {
-                            Log.e(TAG, error.getMessage());
-                        }
-                    });
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Log.e(TAG, error.getMessage());
+                            }
+                        });
+                    } else {
+                        Snackbar.make(rootView, "No hay conexion a Internet", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
                 }
             }
         });
