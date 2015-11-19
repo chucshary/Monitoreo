@@ -67,19 +67,8 @@ public class NotificationTimerTask {
     }
 
     public void getNotification() {
-        sharedPreferences = rootView.getSharedPreferences("NOTIFICACION", Context.MODE_PRIVATE);
-        ids = sharedPreferences.getString("ids", "");
-        notificaciones = sharedPreferences.getString("notificaciones", "");
-        _arrayIds = ids.split("/");
-        _arrayNotificacion = notificaciones.split("/");
-        arrayIds = new int[_arrayIds.length];
-        arrayNotificacion = new int[_arrayNotificacion.length];
-        for (int i = 0; i < _arrayIds.length; i++) {
-            arrayIds[i] = Integer.parseInt(_arrayIds[i].toString());
-            arrayNotificacion[i] = Integer.parseInt(_arrayNotificacion[i].toString());
-            timer = new Timer();
-            timer.schedule(new TimerTaskNotification(arrayIds[i]), 100, arrayNotificacion[i] * 60 * 1000);
-        }
+        timer = new Timer();
+        //timer.schedule(new TimerTaskNotification(arrayIds[i]), 100, arrayNotificacion[i] * 60 * 1000);
     }
 }
 

@@ -18,4 +18,7 @@ public interface UbicacionService {
 
     @GET("/ubicacion/{pacienteId}/")
     public void getLocation(@Path("pacienteId") int id, Callback<Ubicacion> cb);
+
+    @GET("/ubicacion/ultimas/{tutorId}/")
+    public void getLocationPatients(@Path("tutorId") int id, @Header("ACCESS_TOKEN") String token, Callback<List<DtoUbicacionPaciente>> cb);
 }
