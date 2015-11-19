@@ -102,7 +102,6 @@ public class Ubicacion {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.e("Ubicacion", error.getMessage());
                 System.out.print("\nERROR UBICACION" + error + "\n");
                 datosLocalizacion();
             }

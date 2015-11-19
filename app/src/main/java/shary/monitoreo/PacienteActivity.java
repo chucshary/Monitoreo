@@ -4,18 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-
-import org.apache.commons.lang.ObjectUtils;
+import android.view.ViewGroup;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
+import Configuraciones.Connectivity;
 import Configuraciones.Localizacion;
 import Configuraciones.ObtenerNumero;
 import Configuraciones.Ubicacion;
@@ -36,16 +36,21 @@ public class PacienteActivity extends AppCompatActivity {
     private String endpoint;
     int ii = 0;
     private Timer timer;
+    Toolbar toolbar;
+    private Connectivity connectivity;
+    private ViewGroup viewGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paciente);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        viewGroup = (ViewGroup) ((ViewGroup) this
+                .findViewById(android.R.id.content)).getChildAt(0);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         sharedPreferences = getSharedPreferences("Telefono", Context.MODE_PRIVATE);
         numero = sharedPreferences.getString("numero", "");
-        System.out.println("NUM " + numero);
+
         if ((numero.equals(""))) {
             obtenerNumero = new ObtenerNumero(PacienteActivity.this);
             if (obtenerNumero.getPhoneNumber().equals("")) {
@@ -64,13 +69,25 @@ public class PacienteActivity extends AppCompatActivity {
                 finish();
             }
         } else {
-            getPaciente(numero);
+            connectivity = new Connectivity(viewGroup);
+            if (connectivity.checkConnectivity()) {
+                getPaciente(numero);
+            } else {
+                Snackbar.make(viewGroup, "No hay conexion a Internet", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
         }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
+            public void onClick(View v) {
+                connectivity = new Connectivity(viewGroup);
+                if (connectivity.checkConnectivity()) {
+                    getPaciente(numero);
+                } else {
+                    Snackbar.make(viewGroup, "No hay conexion a Internet", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
             }
         });
     }
@@ -93,13 +110,12 @@ public class PacienteActivity extends AppCompatActivity {
         service.getPatientId(numero, new Callback<Paciente>() {
             @Override
             public void success(Paciente paciente, Response response) {
-                System.out.println("CALLBACK " + paciente.getPacienteId() + "" + paciente.getNombre() + " " + paciente.getNotificacion());
+                toolbar.setTitle(paciente.getNombre());
                 sharedPreferences = getSharedPreferences("Telefono", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putInt("idPaciente", paciente.getPacienteId());
                 editor.putInt("notificacion", paciente.getNotificacion());
                 editor.commit();
-
                 TimerTask timerTask = new LocationTimerTask();
                 timer = new Timer();
                 timer.schedule(timerTask, 100, paciente.getNotificacion() * 60 * 1000);
@@ -108,7 +124,8 @@ public class PacienteActivity extends AppCompatActivity {
             @Override
             public void failure(RetrofitError error) {
                 Log.e("Paciente", error.getMessage());
-                System.out.print("ERROR " + error);
+                Snackbar.make(viewGroup, "El usuario no esta registrado.\nRegistrarse en la Aplicacion Web.", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
 

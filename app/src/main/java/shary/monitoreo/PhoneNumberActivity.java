@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 public class PhoneNumberActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
@@ -33,8 +32,6 @@ public class PhoneNumberActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("numero", telefono.getText().toString());
                 editor.commit();
-
-                Toast.makeText(PhoneNumberActivity.this, telefono.getText().toString(), Toast.LENGTH_SHORT).show();
                 intent = new Intent().setClass(
                         PhoneNumberActivity.this, PacienteActivity.class);
                 startActivity(intent);
