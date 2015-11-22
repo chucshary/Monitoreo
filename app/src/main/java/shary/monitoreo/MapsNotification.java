@@ -1,13 +1,14 @@
 package shary.monitoreo;
 
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,37 +22,40 @@ import java.util.ArrayList;
 
 import Configuraciones.Localizacion;
 
-public class Auxiliar extends FragmentActivity {
+public class MapsNotification extends FragmentActivity {
+
     private GoogleMap mMap;
+    private Location location;
+    private LocationManager locationManager;
     private double longitude = 0;
     private double latitude = 0;
     private LatLng latLng;
     private CameraUpdate mcamera;
     private Localizacion localizacion;
     private GoogleMap mapAux;
+    private String _datos = "";
+    private TextView toolbarText;
     private String[] listadoUbicaciones;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.activity_auxiliar);
+        setContentView(R.layout.activity_maps);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.mapNotification);
+                .findFragmentById(R.id.map);
+        toolbarText = (TextView) findViewById(R.id.toolbarText);
         mapAux = mapFragment.getMap();
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.cancel(1);
         setUpMap(mapAux);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
             }
         });
     }
+
 
     private void setUpMap(GoogleMap googleMap) {
         // String latitud, String longitud, String pais,
@@ -66,21 +70,20 @@ public class Auxiliar extends FragmentActivity {
             latitude = Double.parseDouble(listadoUbicaciones[0]);
             longitude = Double.parseDouble(listadoUbicaciones[1]);
             latLng = new LatLng(latitude, longitude);
-            setMarker(latLng, listadoUbicaciones[7] + " - " + listadoUbicaciones[6], listadoUbicaciones[2] + " " +
-                    listadoUbicaciones[3] + " " + listadoUbicaciones[4] + " " +
-                    listadoUbicaciones[5]);
+            setMarker(latLng, listadoUbicaciones[7], latitude + " " + longitude);
         }
     }
+
 
     private void setMarker(LatLng latLng, String titulo, String info) {
         mMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .title(titulo)
                 .snippet(info)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                 .draggable(true));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mcamera = CameraUpdateFactory.newLatLngZoom((latLng), 8);
+        mcamera = CameraUpdateFactory.newLatLngZoom((latLng), 10);
         mMap.animateCamera(mcamera);
     }
 }

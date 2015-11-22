@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import shary.monitoreo.Auxiliar;
 import shary.monitoreo.R;
 
@@ -25,13 +28,14 @@ public class Notification {
         this.rootView = rootView;
     }
 
-    public void push() {
+    public void push(List<String> listadoPaciente) {
         mBuilder =
                 new NotificationCompat.Builder(rootView)
-                        .setSmallIcon(R.drawable.bpverde)
-                        .setContentTitle("My notification")
-                        .setContentText("Hello World!");
+                        .setSmallIcon(R.drawable.bpnotification)
+                        .setContentTitle("Ubicación pacientes")
+                        .setContentText("Mapa");
         resultIntent = new Intent(rootView, Auxiliar.class);
+        resultIntent.putStringArrayListExtra("datos", (ArrayList<String>) listadoPaciente);
         stackBuilder = TaskStackBuilder.create(rootView);
         stackBuilder.addParentStack(Auxiliar.class);
         stackBuilder.addNextIntent(resultIntent);

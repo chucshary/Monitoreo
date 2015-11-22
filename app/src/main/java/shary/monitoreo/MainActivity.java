@@ -7,13 +7,20 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import Configuraciones.Connectivity;
+import Notificaciones.Notification;
 import rest.DtoUbicacionPaciente;
 import rest.UbicacionService;
 import retrofit.Callback;
@@ -35,15 +42,27 @@ public class MainActivity extends AppCompatActivity {
     RestAdapter.Builder builder;
     RestAdapter restAdapter;
     UbicacionService service;
+    private Connectivity connectivity;
+    private ViewGroup viewGroup;
+    private Notification notification;
+    int ii = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        viewGroup = (ViewGroup) ((ViewGroup) this
+                .findViewById(android.R.id.content)).getChildAt(0);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        recycler = new Recycler();
-
+        connectivity = new Connectivity(viewGroup);
+        if (connectivity.checkConnectivity()) {
+            recycler = new Recycler();
+            notifications();
+        } else {
+            Snackbar.make(viewGroup, "No hay conexion a Internet", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +73,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
             }
         });
+    }
+
+    class LocationTimerTask extends TimerTask {
+        @Override
+        public void run() {
+            System.out.print("TIMER " + ii++ + "\n");
+            notifications();
+        }
     }
 
     public void notifications() {
@@ -70,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void success(List<DtoUbicacionPaciente> dtoUbicacionPacientes, Response response) {
                 for (int i = 0; i < dtoUbicacionPacientes.size(); i++) {
-                    System.out.println("PacienteUbicacion " + dtoUbicacionPacientes.get(i).getNombre());
                     listadoUbicacionPaciente.add(dtoUbicacionPacientes.get(i).getLatitud() + "/" +
                                     dtoUbicacionPacientes.get(i).getLongitud() + "/" +
                                     dtoUbicacionPacientes.get(i).getPais() + "/" +
@@ -79,12 +105,18 @@ public class MainActivity extends AppCompatActivity {
                                     dtoUbicacionPacientes.get(i).getFecha() + "/" + dtoUbicacionPacientes.get(i).getNombre()
                     );
                 }
+                System.out.println("PacienteUbicacion " + listadoUbicacionPaciente.toString());
+                notification = new Notification(viewGroup.getContext());
+                notification.push(listadoUbicacionPaciente);
             }
 
             @Override
             public void failure(RetrofitError error) {
-
+                Log.e("PACIENTE_UBICACION ", error.getMessage());
             }
         });
+        TimerTask timerTask = new LocationTimerTask();
+        Timer timer = new Timer();
+        timer.schedule(timerTask, 50000, 1000*60*60);
     }
 }
