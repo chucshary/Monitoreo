@@ -12,12 +12,12 @@ import retrofit.http.Path;
  */
 public interface PacienteService {
     @GET("/paciente")
-    public void getAllPatients(Callback<List<Paciente>> cb);
+    void getAllPatients(Callback<List<Paciente>> cb);
 
     @GET("/paciente/{pacienteIdTel}/")
-    public void getPatientId(@Path("pacienteIdTel") String id, Callback<Paciente> cb);
+    void getPatientId(@Path("pacienteIdTel") String id, Callback<Paciente> cb);
 
     @GET("/paciente/tutor/{tutorId}/")
-    public void getPatientByTutor(@Path("tutorId") int id, @Header("ACCESS_TOKEN") String token, Callback<List<Paciente>> cb);
+    void getPatientByTutor(@Path("tutorId") int id, @Header("ACCESS_TOKEN") String token, Callback<List<Paciente>> cb);
 }
 

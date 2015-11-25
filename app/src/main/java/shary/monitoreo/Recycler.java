@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +44,7 @@ public class Recycler extends Fragment {
     int id = 0;
     private String token = "";
     View rootView;
+    private String idsPatients = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,7 +94,9 @@ public class Recycler extends Fragment {
                         listadoPacienteFoto.add(pacientes.get(i).getUrlFoto().toString());
                         listadoPacienteNombre.add(pacientes.get(i).getNombre().toString());
                         listadoPacienteEtapa.add(pacientes.get(i).getEtapa().toString());
+                        idsPatients += String.valueOf(pacientes.get(i).getPacienteId()) + "/";
                     }
+                    shared(idsPatients);
                     for (int j = 0; j < listadoPacienteNombre.size(); j++) {
                         url = getString(R.string.api_endpointImage).concat(listadoPacienteFoto.get(j).toString().toLowerCase());
                         items.add(new DescripcionPaciente(url, listadoPacienteNombre.get(j).toString(), listadoPacienteEtapa.get(j).toString()));
@@ -106,13 +108,17 @@ public class Recycler extends Fragment {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.e("RECYCLER", error.getMessage());
                 Snackbar.make(rootView, "Error: " + error, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
+    }
 
-
+    public void shared(String ids) {
+        sharedPreferences = rootView.getContext().getSharedPreferences("NOTIFICACION", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("ids", ids);
+        editor.commit();
     }
 
 }

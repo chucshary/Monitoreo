@@ -9,5 +9,5 @@ import retrofit.http.POST;
  */
 public interface AccesoTokenService {
     @POST("/token")
-    public void createAccessToken(@Body Credenciales credentials, Callback<AccesoToken> cb);
+    void createAccessToken(@Body Credenciales credentials, Callback<AccesoToken> cb);
 }

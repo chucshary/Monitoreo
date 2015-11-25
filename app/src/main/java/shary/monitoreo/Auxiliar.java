@@ -19,15 +19,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
-import Configuraciones.Localizacion;
-
 public class Auxiliar extends FragmentActivity {
     private GoogleMap mMap;
     private double longitude = 0;
     private double latitude = 0;
     private LatLng latLng;
     private CameraUpdate mcamera;
-    private Localizacion localizacion;
     private GoogleMap mapAux;
     private String[] listadoUbicaciones;
 
@@ -54,21 +51,25 @@ public class Auxiliar extends FragmentActivity {
     }
 
     private void setUpMap(GoogleMap googleMap) {
-        // String latitud, String longitud, String pais,
-        //       String estado, String ciudad, String direccion, String fecha, String nombre
-        this.mMap = googleMap;
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mMap.setMyLocationEnabled(true);
-        Intent intent = getIntent();
-        ArrayList<String> listadoPaciente = intent.getStringArrayListExtra("datos");
-        for (int i = 0; i < listadoPaciente.size(); i++) {
-            listadoUbicaciones = listadoPaciente.get(i).toString().split("/");
-            latitude = Double.parseDouble(listadoUbicaciones[0]);
-            longitude = Double.parseDouble(listadoUbicaciones[1]);
-            latLng = new LatLng(latitude, longitude);
-            setMarker(latLng, listadoUbicaciones[7] + " - " + listadoUbicaciones[6], listadoUbicaciones[2] + " " +
-                    listadoUbicaciones[3] + " " + listadoUbicaciones[4] + " " +
-                    listadoUbicaciones[5]);
+        try {
+            this.mMap = googleMap;
+            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            mMap.setMyLocationEnabled(true);
+            Intent intent = getIntent();
+            ArrayList<String> listadoPaciente = intent.getStringArrayListExtra("datos");
+            for (int i = 0; i < listadoPaciente.size(); i++) {
+                listadoUbicaciones = listadoPaciente.get(i).toString().split("/");
+                latitude = Double.parseDouble(listadoUbicaciones[0]);
+                longitude = Double.parseDouble(listadoUbicaciones[1]);
+                latLng = new LatLng(latitude, longitude);
+                setMarker(latLng, listadoUbicaciones[7] + " - " + listadoUbicaciones[6], listadoUbicaciones[2] + " " +
+                        listadoUbicaciones[3] + " " + listadoUbicaciones[4] + " " +
+                        listadoUbicaciones[5]);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 
@@ -80,7 +81,6 @@ public class Auxiliar extends FragmentActivity {
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
                 .draggable(true));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mcamera = CameraUpdateFactory.newLatLngZoom((latLng), 8);
-        mMap.animateCamera(mcamera);
+        mcamera = CameraUpdateFactory.newLatLngZoom((latLng), 10);
     }
 }

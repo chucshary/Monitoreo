@@ -76,6 +76,7 @@ public class MapsActivity extends FragmentActivity {
             setMarker(latLng, _datos, latitude + " " + longitude);
 
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

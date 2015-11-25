@@ -19,10 +19,14 @@ public class GuardarPreferencias {
     }
 
     public void guardarPreferencias() {
-        sharedPreferences = rootView.getSharedPreferences("Login", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("token", _Token);
-        editor.putInt("tutorId", _TutorId);
-        editor.commit();
+        try {
+            sharedPreferences = rootView.getSharedPreferences("Login", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("token", _Token);
+            editor.putInt("tutorId", _TutorId);
+            editor.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

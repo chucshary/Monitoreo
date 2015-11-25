@@ -24,13 +24,18 @@ public class _SharedPreferences {
     }
 
     public void guardarPreferencias() {
-        _fields = fields.split("/");
-        _values = values.split("/");
-        sharedPreferences = rootView.getSharedPreferences(nameShared, Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-        for (int i = 0; i < _fields.length; i++) {
-            editor.putString(_fields[i], _values[i]);
+        try {
+            _fields = fields.split("/");
+            _values = values.split("/");
+            sharedPreferences = rootView.getSharedPreferences(nameShared, Context.MODE_PRIVATE);
+            editor = sharedPreferences.edit();
+            for (int i = 0; i < _fields.length; i++) {
+                editor.putString(_fields[i], _values[i]);
+            }
+            editor.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        editor.commit();
+
     }
 }

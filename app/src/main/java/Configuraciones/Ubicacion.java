@@ -45,7 +45,7 @@ public class Ubicacion {
     private UbicacionService ubicacionService;
     private String latlon = "";
     private _SharedPreferences classShared;
-    private String datos;
+    private String datos = "";
 
     public Ubicacion(Context rootView) {
         this.rootView = rootView;
@@ -72,6 +72,7 @@ public class Ubicacion {
                 postUbicacion(latitude, longitude, localizacion.gps(), strDate);
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

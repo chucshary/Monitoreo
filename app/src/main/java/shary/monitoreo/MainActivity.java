@@ -3,9 +3,9 @@ package shary.monitoreo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -31,9 +31,6 @@ import retrofit.client.Response;
 public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private Recycler recycler;
-    private Location location;
-    private double latitude = 0.0;
-    private double longitude = 0.0;
     private LocationManager locationManager;
     private int id = 0;
     private String token = "";
@@ -78,45 +75,54 @@ public class MainActivity extends AppCompatActivity {
     class LocationTimerTask extends TimerTask {
         @Override
         public void run() {
+            SystemClock.sleep(300000);
             System.out.print("TIMER " + ii++ + "\n");
             notifications();
         }
     }
 
     public void notifications() {
-        sharedPreferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
-        id = sharedPreferences.getInt("tutorId", -1);
-        token = sharedPreferences.getString("token", "");
-        endpoint = getString(R.string.api_endpoint);
-        listadoUbicacionPaciente = new ArrayList<String>();
-        builder = new RestAdapter.Builder();
-        builder.setEndpoint(endpoint);
-        restAdapter = builder.build();
-        service = restAdapter.create(UbicacionService.class);
-        service.getLocationPatients(id, token, new Callback<List<DtoUbicacionPaciente>>() {
-            @Override
-            public void success(List<DtoUbicacionPaciente> dtoUbicacionPacientes, Response response) {
-                for (int i = 0; i < dtoUbicacionPacientes.size(); i++) {
-                    listadoUbicacionPaciente.add(dtoUbicacionPacientes.get(i).getLatitud() + "/" +
-                                    dtoUbicacionPacientes.get(i).getLongitud() + "/" +
-                                    dtoUbicacionPacientes.get(i).getPais() + "/" +
-                                    dtoUbicacionPacientes.get(i).getEstado() + "/" + dtoUbicacionPacientes.get(i).getCiudad() + "/" +
-                                    dtoUbicacionPacientes.get(i).getDireccion() + "/" +
-                                    dtoUbicacionPacientes.get(i).getFecha() + "/" + dtoUbicacionPacientes.get(i).getNombre()
-                    );
+        try {
+            sharedPreferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+            id = sharedPreferences.getInt("tutorId", -1);
+            token = sharedPreferences.getString("token", "");
+            endpoint = getString(R.string.api_endpoint);
+            listadoUbicacionPaciente = new ArrayList<String>();
+            builder = new RestAdapter.Builder();
+            builder.setEndpoint(endpoint);
+            restAdapter = builder.build();
+            service = restAdapter.create(UbicacionService.class);
+            service.getLocationPatients(id, token, new Callback<List<DtoUbicacionPaciente>>() {
+                @Override
+                public void success(List<DtoUbicacionPaciente> dtoUbicacionPacientes, Response response) {
+                    for (int i = 0; i < dtoUbicacionPacientes.size(); i++) {
+                        listadoUbicacionPaciente.add(dtoUbicacionPacientes.get(i).getLatitud() + "/" +
+                                        dtoUbicacionPacientes.get(i).getLongitud() + "/" +
+                                        dtoUbicacionPacientes.get(i).getPais() + "/" +
+                                        dtoUbicacionPacientes.get(i).getEstado() + "/" + dtoUbicacionPacientes.get(i).getCiudad() + "/" +
+                                        dtoUbicacionPacientes.get(i).getDireccion() + "/" +
+                                        dtoUbicacionPacientes.get(i).getFecha() + "/" + dtoUbicacionPacientes.get(i).getNombre()
+                        );
+                    }
+                    System.out.println("PacienteUbicacion " + listadoUbicacionPaciente.toString());
+                    notification = new Notification(viewGroup.getContext());
+                    notification.push(listadoUbicacionPaciente);
                 }
-                System.out.println("PacienteUbicacion " + listadoUbicacionPaciente.toString());
-                notification = new Notification(viewGroup.getContext());
-                notification.push(listadoUbicacionPaciente);
-            }
 
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("PACIENTE_UBICACION ", error.getMessage());
-            }
-        });
-        TimerTask timerTask = new LocationTimerTask();
-        Timer timer = new Timer();
-        timer.schedule(timerTask, 50000, 1000*60*60);
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("Paciente Ubicacion ", error.getMessage());
+                    Snackbar.make(viewGroup, "Error al conectar con el Servidor", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
+            TimerTask timerTask = new LocationTimerTask();
+            Timer timer = new Timer();
+            timer.schedule(timerTask, 1000, 300000);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

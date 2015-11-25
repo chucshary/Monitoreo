@@ -42,7 +42,7 @@ public class ChooseActivity extends AppCompatActivity {
                         finish();
                     }
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
             }
         });

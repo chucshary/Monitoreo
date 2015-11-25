@@ -88,13 +88,16 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RecetaViewHolder> 
 
     public void idPaciente(int pos) {
         int paciente = 0;
-        String datos;
-        sharedPreferences = context.getContext().getSharedPreferences("NOTIFICACION", Context.MODE_PRIVATE);
-        ids = sharedPreferences.getString("ids", "");
-        _id = ids.split("/");
-        paciente = Integer.parseInt(_id[pos]);
-        ubicacion = new Ubicacion(context.getContext());
-        ubicacion.getUbicacion(paciente);
+        try {
+            sharedPreferences = context.getContext().getSharedPreferences("NOTIFICACION", Context.MODE_PRIVATE);
+            ids = sharedPreferences.getString("ids", "");
+            _id = ids.split("/");
+            paciente = Integer.parseInt(_id[pos]);
+            ubicacion = new Ubicacion(context.getContext());
+            ubicacion.getUbicacion(paciente);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

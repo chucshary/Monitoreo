@@ -47,6 +47,7 @@ public class Localizacion {
             city = addresses.get(0).getLocality();
             direccion = addresses.get(0).getSubLocality() + ", " + addresses.get(0).getThoroughfare();
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return country + "/" + state + "/" + city + "/" + direccion;
     }

@@ -34,6 +34,7 @@ public class CargarPreferencias {
                 ((LoginActivity) (rootView)).finish();
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
