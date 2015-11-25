@@ -1,6 +1,8 @@
 package shary.monitoreo;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +20,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     private Handler handler = new Handler();
     private ProgressBar progressBar;
     private boolean mVisible;
+    private Intent mainIntent;
+    private SharedPreferences sharedPreferences;
+    private String tipoUusario = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +49,21 @@ public class SplashScreenActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
-                    Intent mainIntent = new Intent().setClass(
-                            SplashScreenActivity.this, ChooseActivity.class);
-                    startActivity(mainIntent);
+                    sharedPreferences = getSharedPreferences("TIPO_USUARIO", Context.MODE_PRIVATE);
+                    tipoUusario = sharedPreferences.getString("usuario", "0");
+                    if (tipoUusario.equals("0")) {
+                        mainIntent = new Intent().setClass(
+                                SplashScreenActivity.this, ChooseActivity.class);
+                        startActivity(mainIntent);
+                    } else if (tipoUusario.equals("1")) {
+                        mainIntent = new Intent().setClass(
+                                SplashScreenActivity.this, LoginActivity.class);
+                        startActivity(mainIntent);
+                    } else {
+                        mainIntent = new Intent().setClass(
+                                SplashScreenActivity.this, PacienteActivity.class);
+                        startActivity(mainIntent);
+                    }
                     finish();
                 }
             }).start();

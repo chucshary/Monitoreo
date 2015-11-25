@@ -9,10 +9,13 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import Preferencias._SharedPreferences;
+
 public class ChooseActivity extends AppCompatActivity {
     RadioGroup radioGroup;
     RadioButton radioButton;
     private Intent intent;
+    private _SharedPreferences _shaSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +33,16 @@ public class ChooseActivity extends AppCompatActivity {
                 radioButton = (RadioButton) findViewById(selectedId);
                 try {
                     if (radioButton.getText().equals("Tutor")) {
+                        _shaSharedPreferences = new _SharedPreferences(view.getContext(), "usuario", "1", "TIPO_USUARIO");
+                        _shaSharedPreferences.guardarPreferencias();
                         intent = new Intent().setClass(
                                 ChooseActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
                     }
                     if (radioButton.getText().equals("Paciente")) {
+                        _shaSharedPreferences = new _SharedPreferences(view.getContext(), "usuario", "2", "TIPO_USUARIO");
+                        _shaSharedPreferences.guardarPreferencias();
                         intent = new Intent().setClass(
                                 ChooseActivity.this, PacienteActivity.class);
                         startActivity(intent);
